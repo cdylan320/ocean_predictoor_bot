@@ -27,23 +27,40 @@ else
     exit 1
 fi
 
-# Load environment variables
+# Set PATH if not already set
+export PATH="$PATH:."
+
+# Load environment variables from pdr_config.env if it exists
 if [ -f "pdr_config.env" ]; then
-    echo -e "${YELLOW}Loading environment variables...${NC}"
+    echo -e "${YELLOW}Loading environment variables from pdr_config.env...${NC}"
     source pdr_config.env
+    echo -e "${GREEN}✓ Environment loaded from pdr_config.env${NC}"
 else
-    echo -e "${RED}Error: pdr_config.env not found!${NC}"
-    exit 1
+    echo -e "${YELLOW}Note: pdr_config.env not found. Using environment variables from shell.${NC}"
+    echo -e "${YELLOW}  (Create pdr_config.env with your PRIVATE_KEY if needed)${NC}"
 fi
 
-# Check if PRIVATE_KEY is set
+# Check if PRIVATE_KEY is set (required for blockchain operations)
 if [ -z "$PRIVATE_KEY" ]; then
-    echo -e "${RED}Error: PRIVATE_KEY not set in pdr_config.env!${NC}"
-    exit 1
+    if [ "$1" = "sim" ]; then
+        # Simulation mode doesn't need PRIVATE_KEY
+        echo -e "${GREEN}✓ Simulation mode - PRIVATE_KEY not required${NC}"
+    else
+        echo -e "${RED}Error: PRIVATE_KEY not set!${NC}"
+        echo -e "${YELLOW}  Set it via:${NC}"
+        echo -e "${YELLOW}    export PRIVATE_KEY=0xYOUR_PRIVATE_KEY${NC}"
+        echo -e "${YELLOW}  Or create pdr_config.env with:${NC}"
+        echo -e "${YELLOW}    export PRIVATE_KEY=0xYOUR_PRIVATE_KEY${NC}"
+        exit 1
+    fi
+else
+    echo -e "${GREEN}✓ PRIVATE_KEY is set${NC}"
 fi
 
-echo -e "${GREEN}✓ Environment loaded${NC}"
-echo -e "${GREEN}✓ Wallet: $WALLET_ADDRESS${NC}"
+# Display wallet address if available
+if [ -n "$WALLET_ADDRESS" ]; then
+    echo -e "${GREEN}✓ Wallet: $WALLET_ADDRESS${NC}"
+fi
 
 # Run the bot with provided arguments or defaults
 if [ "$1" = "sim" ]; then
