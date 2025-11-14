@@ -2,8 +2,8 @@
 lake_ss:
   lake_dir: lake_data
   feeds:
-    - binance BTC/USDT ETH/USDT 5m # REQUIRED: Must match prediction feed (will get 451 errors, but bot uses cached data)
-    - kraken BTC/USDT ETH/USDT 5m # Use Kraken for fresh training data (no VPN needed!)
+    - binance BTC/USDT ETH/USDT 5m # REQUIRED: Must match prediction feed (works from US VPS, no 451 errors)
+    - kraken BTC/USDT ETH/USDT 5m # Optional: Additional training data source (can remove if using US VPS)
   #    - binance BTC/USDT ETH/USDT BNB/USDT XRP/USDT ADA/USDT DOGE/USDT SOL/USDT LTC/USDT TRX/USDT DOT/USDT 5m
   st_timestr: 90 days ago # OPTIMIZED: Need 90+ days for 2000 epochs training (2000 epochs = ~7 days, need buffer)
   fin_timestr: now # ending date for data
@@ -16,9 +16,9 @@ predictoor_ss:
   predict_train_feedsets:
     - predict: binance BTC/USDT c 5m # MUST use Binance (only feeds available on-chain)
       train_on:
-        - binance BTC/USDT c 5m # REQUIRED: Prediction feed must be in training feeds
-        - kraken BTC/USDT c 5m # Use Kraken for training (fresh data, no VPN needed!)
-        - kraken ETH/USDT c 5m # Add correlated asset for better context
+        - binance BTC/USDT c 5m # REQUIRED: Prediction feed must be in training feeds (works from US VPS)
+        - kraken BTC/USDT c 5m # Optional: Additional training data (can remove if using US VPS)
+        - kraken ETH/USDT c 5m # Optional: Correlated asset for better context (can remove if using US VPS)
       ta_features: ["rsi", "macd"] # OPTIMIZED: Technical indicators improve accuracy (research shows 6.7% improvement)
   #   - predict: kraken BTC/USDT c 5m  # NOT AVAILABLE - No Kraken feeds on-chain
   #     train_on:
