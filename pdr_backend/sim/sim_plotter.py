@@ -41,12 +41,12 @@ class SimPlotter:
                 "sim_state folder does not exist. Please run the simulation first."
             )
         path = sorted(Path("sim_state").iterdir(), key=os.path.getmtime)[-1]
-        return str(path).replace("sim_state/", "")
+        return path.name
 
     @staticmethod
     def get_all_run_names():
         path = Path("sim_state").iterdir()
-        return [str(p).replace("sim_state/", "") for p in path]
+        return [p.name for p in path]
 
     def load_state(self, multi_id):
         root_path = f"sim_state/{multi_id}"

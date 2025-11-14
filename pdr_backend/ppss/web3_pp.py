@@ -177,7 +177,7 @@ class Web3PP(StrMixin):
     def tx_gas_price(self) -> int:
         """Return gas price for use in call_params of transaction calls."""
         network = self.network
-        if network in ["sapphire-testnet", "sapphire-mainnet"]:
+        if network in ["sapphire-testnet", "sapphire-mainnet", "oasis_sapphire_testnet", "oasis_sapphire"]:
             return self.web3_config.w3.eth.gas_price
             # return 100000000000
         if network in ["development", "barge-predictoor-bot", "barge-pytest"]:
@@ -230,6 +230,9 @@ class Web3PP(StrMixin):
 
         if self.network == "sapphire-mainnet":
             return d["oasis_sapphire"]
+
+        if self.network == "sapphire-testnet":
+            return d["oasis_sapphire_testnet"]
 
         return None
 

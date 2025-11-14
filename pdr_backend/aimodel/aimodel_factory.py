@@ -26,6 +26,17 @@ from xgboost import XGBClassifier, XGBRegressor
 from pdr_backend.aimodel.aimodel import Aimodel
 from pdr_backend.ppss.aimodel_ss import AimodelSS
 
+# Try to import Keras models (optional dependency)
+try:
+    from pdr_backend.aimodel.keras_wrapper import (
+        KerasClassifierWrapper,
+        build_cnn_gru_model,
+        build_lstm_model,
+    )
+    KERAS_AVAILABLE = True
+except ImportError:
+    KERAS_AVAILABLE = False
+
 logger = logging.getLogger("aimodel_factory")
 
 
@@ -314,6 +325,33 @@ def _approach_to_skm(approach: str, seed: Optional[int]):
         return GaussianProcessClassifier(random_state=seed)
     if approach == "ClassifXgboost":
         return XGBClassifier(random_state=seed)
+    
+    # Deep learning models (require TensorFlow)
+    if approach == "ClassifCNNGru":
+        if not KERAS_AVAILABLE:
+            raise ImportError(
+                "TensorFlow is required for CNN-GRU. Install with: pip install tensorflow"
+            )
+        return KerasClassifierWrapper(
+            model_builder=build_cnn_gru_model,
+            epochs=50,
+            batch_size=32,
+            verbose=0,
+            random_state=seed
+        )
+    
+    if approach == "ClassifLSTM":
+        if not KERAS_AVAILABLE:
+            raise ImportError(
+                "TensorFlow is required for LSTM. Install with: pip install tensorflow"
+            )
+        return KerasClassifierWrapper(
+            model_builder=build_lstm_model,
+            epochs=50,
+            batch_size=32,
+            verbose=0,
+            random_state=seed
+        )
 
     # unidentified
     return None

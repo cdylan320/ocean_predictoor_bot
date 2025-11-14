@@ -59,8 +59,18 @@ def has_nan(
         return has_None or sum(x.is_nan()) > 0  # type: ignore[union-attr]
 
     if isinstance(x, pl.DataFrame):
+        # Handle empty DataFrame
+        if x.is_empty():
+            return False
         has_None = any(col.is_null().any() for col in x)
-        return has_None or sum(sum(x).is_nan()) > 0  # type: ignore[union-attr]
+        # Check for NaN values: convert to numpy and check
+        try:
+            x_np = x.to_numpy()
+            has_nan_values = np.isnan(x_np).any()
+        except (ValueError, TypeError):
+            # If conversion fails, check column by column
+            has_nan_values = any(col.is_nan().any() for col in x)
+        return has_None or has_nan_values
 
     # pd.Series or pd.DataFrame
     return x.isnull().values.any()  # type: ignore[union-attr]

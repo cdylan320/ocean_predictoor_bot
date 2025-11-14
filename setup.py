@@ -39,6 +39,7 @@ install_requirements = [
     "time_machine==2.16.0",
     "typeguard==4.4.1",
     "xgboost==2.1.3",
+    "tensorflow>=2.13.0",  # For CNN-GRU and LSTM models
     "web3==6.20.2",
     "sapphire.py==0.2.3",
     "stopit==1.1.2",

@@ -117,9 +117,9 @@ class AimodelDataFactory:
         features: List[pd.Series] = []
         if ta_features:
             for feed in train_feeds_list:
-                # Generate feed keys
+                # Generate feed keys with _col suffix for TechnicalIndicator
                 feed_keys = {
-                    key: f"{feed.exchange}:{feed.pair}:{key}"
+                    f"{key}_col": f"{feed.exchange}:{feed.pair}:{key}"
                     for key in ["close", "open", "high", "low", "volume"]
                 }
 

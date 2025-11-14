@@ -14,6 +14,8 @@ CLASSIF_APPROACH_OPTIONS = [
     "ClassifLinearSVM",
     "ClassifGaussianProcess",
     "ClassifXgboost",
+    "ClassifCNNGru",  # CNN-GRU hybrid (requires TensorFlow)
+    "ClassifLSTM",  # LSTM model (requires TensorFlow)
     "ClassifConstant",
 ]
 REGR_APPROACH_OPTIONS = [
