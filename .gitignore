@@ -167,7 +167,6 @@ dir/
 
 # predictoor-specific
 out*.txt
-my_ppss.yaml
 my_logging.yaml
 logs/
 csvs/
