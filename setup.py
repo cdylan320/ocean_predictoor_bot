@@ -11,7 +11,7 @@ install_requirements = [
     "coverage",
     "dash[testing]==2.18.2",
     "dash_bootstrap_components==1.6.0",
-    "dateparser==1.2.0",
+    "dateparser==1.2.2",
     "duckdb==1.1.3",
     "enforce_typing",
     "eth-account==0.11.0",
